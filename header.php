@@ -58,7 +58,7 @@
       </li>
 
     </ul>
-    <div class="applicationname-light">SGCR - Folha de Produção</div>
+    <div class="applicationname-light flex-grow-1 text-center">SGCR - Folha de Produção</div>
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto" >
@@ -135,7 +135,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?php echo $_SG['rf'] ?>app/lista.php?produto=rd_tl" class="nav-link disabled">
+                <a href="<?php echo $_SG['rf'] ?>app/lista.php?produto=rd_tl" class="nav-link">
                   <i class="fa fa-arrow-right nav-icon"></i>
                   <p>CARD-IPEN</p>
                 </a>
@@ -216,6 +216,62 @@
             </ul>
           </li>
 
+          
+
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fa fa-users"></i>
+              <p>
+                Gestão de Usuários
+                <i class="fas fa-angle-left right"></i>
+                <span class="badge badge-info right">7</span>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="<?php echo $_SG['rf'] ?>appUsuarios/DireitosUsuario.php" class="nav-link">
+                  <i class="fa fa-arrow-right nav-icon"></i>
+                  <p>Direito por Usuário</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?php echo $_SG['rf'] ?>appUsuarios/DireitosGrupo.php" class="nav-link">
+                  <i class="fa fa-arrow-right nav-icon"></i>
+                  <p>Direitos por Grupo</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?php echo $_SG['rf'] ?>appUsuarios/Sistema.php" class="nav-link">
+                  <i class="fa fa-arrow-right nav-icon"></i>
+                  <p>Sistema</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?php echo $_SG['rf'] ?>appUsuarios/Programas.php" class="nav-link">
+                  <i class="fa fa-arrow-right nav-icon"></i>
+                  <p>Programas</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?php echo $_SG['rf'] ?>appUsuarios/Grupos.php" class="nav-link">
+                  <i class="fa fa-arrow-right nav-icon"></i>
+                  <p>Grupos</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?php echo $_SG['rf'] ?>appUsuarios/Area.php" class="nav-link">
+                  <i class="fa fa-arrow-right nav-icon"></i>
+                  <p>Área</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?php echo $_SG['rf'] ?>appUsuarios/AlterarSenha.php" class="nav-link">
+                  <i class="fa fa-arrow-right nav-icon"></i>
+                  <p>Alterar Senha</p>
+                </a>
+              </li>
+            </ul>
+          </li>
 
           <li class="nav-item">
             <a href="<?php echo $_SG['rf'] ?>logout.php" class="nav-link">

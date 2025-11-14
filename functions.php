@@ -405,7 +405,7 @@ if(isset($_POST["gravaNovoMaterial"])){
 }
 
 if(isset($_POST["btnGravaRP"])){
-	//var_dump($_POST);
+	var_dump($_POST);
 	//var_dump($_GET);
 	include("../lib/DB.php");
 	
@@ -493,6 +493,8 @@ if(isset($_POST["GravaAmostraCab"])){
 	$p8= $_POST["p8"];
 	$p2 = str_replace(":","", $p2);
 
+	if ($p1 == ""){$p1=0;}
+
 
     $exec = "";
 	$exec .= "exec crsa.P0551_FRASCOSCAB_IA ";
@@ -511,6 +513,9 @@ if(isset($_POST["GravaAmostraCab"])){
 	$exec .= "@p551_cq_id_out            = '' ";
 
 
+	
+
+
 	include("../lib/DB.php");		
 	//$stmt = $conn->prepare("exec crsa.P0551_FRASCOSCAB_IA");
 	$stmt = $conn->prepare($exec) ;	
@@ -524,7 +529,7 @@ if(isset($_POST["GravaAmostraCab"])){
 
 
 if(isset($_POST["btnGravaGQ"])){
-	//var_dump($_POST);
+	var_dump($_POST);
 	//var_dump($_GET);
 	include("../lib/DB.php");
 	$stmt = $conn->prepare("set nocount on; exec crsa.Ppst_GRAVA_GQ :param1,  :param2,  :param3,  :param4,  :param5,  :param6,  :param7");
@@ -940,6 +945,11 @@ if(isset($_POST["GravaLiberaArea"])){
 		$proc = "crsa.P0607_LIBERAAREA";
 	}
 
+	if ($_POST["produto"] == "rd_tl"){
+		$proc = "crsa.P0643_TLCL3_LIBERAAREA";
+	}
+
+
 	
 
 	for ($i = 1; $i <= 7; $i++) {
@@ -986,6 +996,12 @@ if(isset($_POST["GravaEmbPrimaria"])){
 	if ($_POST["produto"]  == "rd_i131"){
 		$proc = "crsa.P0643_I131_EMBPRIMARIA";
 	}
+
+	if ($_POST["produto"]  == "rd_tl"){
+		$proc = "crsa.P0643_TLCL3_EMBPRIMARIA";
+	}
+
+
 
 	if ($_POST["produto"]  == "rd_ga67"){
 		$proc = "crsa.P0607_EMBPRIMARIA ";
@@ -2213,17 +2229,18 @@ if(isset($_POST["gravaNovoInfRadio"])){
     include("../lib/DB.php");
 
 	$volume1 = str_replace(',','.',$_POST['txtVolume1']);
-	
+	$ativ1 = str_replace(',','.',$_POST['txtAtvTotImp1']);
+	$vlmedida1 = str_replace(',','.',$_POST['txtMedDtProg1']);
 	
 	$top_conc1 = $_POST['txtVolume1'] != 0 ? ($_POST['txtMedDtProg1'] / $volume1) : 0;
 	$qs = "exec crsa.P0643_I131_InformRadioisotopo ";
 	$qs .= "@pst_numero='".$_POST['tpst_numero'] ."',";
 	$qs .= "@nomefornec1='".$_POST['txtNomeFornecedor1']."',";
-	$qs .= "@ativ1='".$_POST['txtAtvTotImp1']."',";
+	$qs .= "@ativ1='".$ativ1."',";
 	$qs .= "@volu1='".$volume1."',";
 	$qs .= "@dtreceb1='".str_replace('T',' ',str_replace('-','',$_POST['txtDtReceb1']))."',";
 	$qs .= "@dtcalib1='".str_replace('T',' ',str_replace('-','',$_POST['txtDtCalib1']))."',";
-	$qs .= "@vlmedida1='".$_POST['txtMedDtProg1']."',";
+	$qs .= "@vlmedida1='".$vlmedida1."',";
 	$qs .= "@dtmedida1='".str_replace('T',' ',str_replace('-','',$_POST['txtDtProg1']))."',";
 	$qs .= "@crteo1='" .$top_conc1."',";
 	$qs .= "@cdusuario='". 	$_SESSION['usuarioID'] ."',";
@@ -2729,7 +2746,7 @@ function RetornaLiberaArea($_pst_numero){
 		$query = "exec crsa.P0643_I131_LIBERAAREA " .$pst_numero. ", @tiposaida=1"; 
 	}
 	if ($produto == 'rd_tl'){
-		$query = "exec crsa.P0643_I131_LIBERAAREA " .$pst_numero. ", @tiposaida=1"; 
+		$query = "exec crsa.P0643_TLCL3_LIBERAAREA " .$pst_numero. ", @tiposaida=1"; 
 	}
 
 	if ($produto == 'rd_ga67'){
@@ -2843,6 +2860,464 @@ catch(PDOException){
 	return $prep;
 
 }
+
+///***DEFINIÇÕES E VALIDAÇÕES***///
+function RetornaCMBProdutosDefinicoes() {
+    include("../lib/DB.php");
+
+    // Obtendo o código do usuário
+    $cdUsuario = isset($_SESSION['usuarioID']) ? $_SESSION['usuarioID'] : null;
+
+    if (!$cdUsuario) {
+        return "<pre>Erro: Usuário não identificado.</pre>";
+    }
+
+    try {
+        // Executando a procedure
+        $stmt = $conn->prepare("EXEC vendasPelicano.dbo.P0250_Produto_GRUPO @cdusuario = :cdusuario, @resulta = 0, @mensa = '';");
+        $stmt->bindParam(':cdusuario', $cdUsuario, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        // Pegando o resultado XML retornado
+        $xmlResult = $stmt->fetchColumn();
+        
+        if (!$xmlResult) {
+            echo "<pre>Debug: Nenhum dado XML retornado.</pre>";
+            return "<select id='cmbprod' name='cmbprod' class='form-control'><option value='0'>Nenhum produto encontrado</option></select>";
+        }
+
+        // Convertendo XML para array. Envolvendo em uma tag root para ser XML válido
+        $xml = simplexml_load_string("<root>$xmlResult</root>"); 
+        if (!$xml) {
+            echo "<pre>Debug: Falha ao converter XML.</pre>";
+            return "<pre>Erro ao converter XML.</pre>";
+        }
+
+        // Construindo o select
+        $prep = "<select id='cmbprod' name='cmbprod' class='form-control'>";
+        $prep .= "<option value='0'>Selecione</option>";
+
+        foreach ($xml->row as $row) {
+			// Convertendo para string e removendo espaços extras
+            $prod_cod510 = trim((string) $row['prod_cod510']); 
+            $prep .= "<option value='" . htmlspecialchars($prod_cod510) . "'>" . htmlspecialchars($prod_cod510) . "</option>";
+        }
+
+        $prep .= "</select>";
+
+        return $prep;
+    } catch (PDOException $e) {
+        echo "<pre>Erro ao executar a procedure: " . $e->getMessage() . "</pre>";
+        return "<pre>Erro ao executar a procedure.</pre>";
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Se vier apenas o produtoSelecionado, chama `atualizaLoteDefinicao`
+    if (isset($_POST['produtoSelecionado']) && !isset($_POST['loteSelecionado'])) {
+        $produtoSelecionado = trim($_POST['produtoSelecionado']);
+        echo atualizaLoteDefinicao($produtoSelecionado);
+        exit;
+    }
+    
+    // Se vier produto e lote, e não houver parâmetro "procurarSerie", chama `RetornaListaSerie`
+    if (isset($_POST['produtoSelecionado']) && isset($_POST['loteSelecionado']) && !isset($_POST['procurarSerie'])) {
+        $produto = trim($_POST['produtoSelecionado']);
+        $lote = trim($_POST['loteSelecionado']);
+        $ordem = isset($_POST['ordem']) ? intval($_POST['ordem']) : 1;
+        echo RetornaListaSerie($produto, $lote, $ordem);
+        exit;
+    }
+
+    // Se vier produto e lote, com o parâmetro "procurarSerie", chama a função carregaSerie
+    if (isset($_POST['produtoSelecionado']) && isset($_POST['loteSelecionado']) && isset($_POST['procurarSerie'])) {
+        $produtoSelecionado = trim($_POST['produtoSelecionado']);
+        $loteSelecionado = trim($_POST['loteSelecionado']);
+        // Chama a função carregaSerie para buscar a série
+        echo carregaSerie($produtoSelecionado, $loteSelecionado);
+        exit;
+    }
+
+	// Se vier `p110chve`, chama `gravarSerie`
+	if (isset($_POST['p110chve'], $_POST['p110serie'], $_POST['cdusuario'], $_POST['senha'])) {
+        gravarSerie($_POST['p110chve'], $_POST['p110serie'], $_POST['cdusuario'], $_POST['senha']);
+        exit;
+    }
+
+	// Se vier cdusuario, tipo, inicio, fim
+	if (isset($_POST['produto'], $_POST['lote'], $_POST['serie'], $_POST['tipo'], $_POST['inicio'], $_POST['fim'], $_POST['forca'], $_POST['cdusuario'], $_POST['senha'])) {
+		gravarSerieAtividadeData(
+			$_POST['produto'], 
+			$_POST['serie'], 
+			$_POST['cdusuario'], 
+			$_POST['senha'], 
+			$_POST['lote'], 
+			$_POST['tipo'], 
+			$_POST['inicio'], 
+			$_POST['fim'], 
+			$_POST['forca']
+		);
+		exit;
+	}
+}
+
+function atualizaLoteDefinicao($produtoSelecionado) {
+    include("../lib/DB.php");
+    global $conn;
+
+    try {
+        // Preparar e executar a stored procedure
+        $stmt = $conn->prepare("EXEC vendasPelicano.dbo.P0100_Calendario_Produto @p100prod = :produto, @tipo = 1");  
+        $stmt->bindParam(':produto', trim($produtoSelecionado), PDO::PARAM_STR);
+        $stmt->execute();
+
+        // Obtém o resultado da procedure, que deve ser XML
+        $xmlResult = "";
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $xmlResult .= $row[0]; // Supondo que a coluna 0 contenha o XML
+        }
+
+        // Verifica se a procedure retornou algo
+        if (empty($xmlResult)) {
+            return "<select id='cmbLote' name='cmbLote' class='form-control'><option value='0'>Nenhum lote encontrado</option></select>";
+        }
+
+        // Limpar espaços em branco e remover caracteres não esperados
+        $xmlResult = trim($xmlResult);        
+
+        // Verifica se o XML retornado já contém uma tag raiz
+        if (!str_starts_with($xmlResult, "<root>")) {
+            $xmlResult = "<root>$xmlResult</root>";
+        }
+
+        // Tenta carregar o XML
+        $xml = simplexml_load_string($xmlResult);
+        if (!$xml) {
+            return "<select id='cmbLote' name='cmbLote' class='form-control'><option value='0'>Erro ao converter XML</option></select>";
+        }
+		
+        // Construir o select de lotes
+        $select = "<select id='cmbLote' name='cmbLote' class='form-control'>";
+
+        // Opção padrão
+        $select .= "<option value='0'>Selecione o Lote</option>";
+
+        foreach ($xml->row as $row) {
+            $p100lote = trim((string) $row['p100lote']);            
+            // A opção do select será baseada no valor do lote
+            $select .= "<option value='" . htmlspecialchars($p100lote) . "'>" . htmlspecialchars($p100lote) . "</option>";
+        }
+
+        $select .= "</select>";
+
+        return $select;
+    } catch (PDOException $e) {
+        return "<select id='cmbLote' name='cmbLote' class='form-control'><option value='0'>Erro ao executar a procedure: " . $e->getMessage() . "</option></select>";
+    }
+}
+
+function RetornaListaSerie($produto, $lote, $ordem) {
+    include("../lib/DB.php");
+    global $conn;
+
+    try {
+        // Prepara a query para executar a stored procedure
+        $query = "SET NOCOUNT ON; EXEC vendasPelicano.dbo.P0110_SERIE_LISTA @produto = :produto, @lote = :lote, @ORDEM = :ordem";
+
+        // Prepara a execução da query com os parâmetros
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':produto', $produto, PDO::PARAM_STR);
+        $stmt->bindParam(':lote', $lote, PDO::PARAM_INT);
+        $stmt->bindParam(':ordem', $ordem, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // Obtém o resultado da procedure, que deve ser XML
+        $xmlResult = "";
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $xmlResult .= $row[0]; // Supondo que a coluna 0 contenha o XML
+        }
+
+        // Verifica se o XML retornado já contém uma tag raiz
+        if (!str_starts_with($xmlResult, "<root>")) {
+            $xmlResult = "<root>$xmlResult</root>";
+        }
+
+        // Tenta carregar o XML
+        libxml_use_internal_errors(true); // Ativa captura de erros
+        $xml = simplexml_load_string($xmlResult);
+
+        // Verifica se o XML foi carregado corretamente
+        if ($xml === false) {
+            $errors = libxml_get_errors(); // Obtém os erros do XML
+            echo "<pre>Erro ao carregar o XML:</pre>";
+            foreach ($errors as $error) {
+                echo "<pre>" . $error->message . "</pre>";
+            }
+            return "<tr><td colspan='8'>Erro ao processar o XML.</td></tr>";
+        }
+
+        $prep = "";
+
+		// Verifica se há registros no XML
+		if (count($xml->children()) == 0) {
+			return "<tr><td colspan='8' class='text-center'>Nenhum registro encontrado</td></tr>";
+		}
+
+        // Itera sobre os registros no XML
+        foreach ($xml->children() as $row) {
+			
+			$dataCalibracao = isset($row['p110dtpx']) ? 
+			substr($row['p110dtpx'], 0, 2) . '/' . substr($row['p110dtpx'], 3, 2) . '/' . substr($row['p110dtpx'], 6, 4) : '';		
+		
+            // Prepara os dados de cada linha da tabela
+			$prep .= "<tr>";
+            $prep .= "<td>" . htmlspecialchars($row['p110lote']) . "</td>";
+            $prep .= "<td>" . htmlspecialchars($row['cli_dest_responsavel']) . "</td>";
+            $prep .= "<td>" . htmlspecialchars($row['uf_codigo']) . "</td>";
+            $prep .= "<td>" . htmlspecialchars($row['p110atv']) . "</td>";
+            $prep .= "<td>" . htmlspecialchars($row['p110serie']) . "</td>";
+            $prep .= "<td>" . htmlspecialchars($row['p110prod']) . "</td>";
+            $prep .= "<td>" . htmlspecialchars($dataCalibracao) . "</td>";
+            $prep .= "<td>" . (isset($row['p110obsd']) ? htmlspecialchars($row['p110obsd']) : '') . "</td>";
+
+			// Adiciona os campos ocultos para p110serie e p110chve
+			$prep .= "<td><input type='hidden' class='p110serie' value='" . htmlspecialchars($row['p110serie']) . "' /></td>";
+			$prep .= "<td><input type='hidden' class='p110chve' value='" . htmlspecialchars($row['p110chve']) . "' /></td>";
+			
+			
+            $prep .= "</tr>";
+        }
+
+        return $prep;
+    } catch (PDOException $e) {
+		return "<tr><td colspan='8' class='text-center'>Falha ao executar consulta</td></tr>";
+    }
+}
+
+function gravarSerie($p110chve, $p110serie, $cdusuario, $senha) {
+    include("../lib/DB.php");
+    global $conn;
+
+    try {
+		$mensa = ValidaSenha($cdusuario, $senha);
+		
+		if($mensa != ""){
+			echo "<script>parent.toastApp(3000,'***   SENHA INVÁLIDA   ***','ERRO')</script>";
+			return;
+		}
+
+        $stmt = $conn->prepare("DECLARE @resulta INT, @mensa VARCHAR(100);
+                                EXEC vendasPelicano.dbo.P0110_SERIE_01 
+                                    @p110chve = :p110chve, 
+                                    @serie = :serie, 
+                                    @cdusuario = :cdusuario, 
+                                    @senha = :senha, 
+                                    @resulta = @resulta OUTPUT, 
+                                    @mensa = @mensa OUTPUT;
+                                SELECT @resulta AS resulta, @mensa AS mensa;");
+
+        $stmt->bindParam(':p110chve', $p110chve, PDO::PARAM_STR);
+		$stmt->bindParam(':serie', $p110serie, PDO::PARAM_STR);
+        $stmt->bindParam(':cdusuario', $cdusuario, PDO::PARAM_INT);
+        $stmt->bindParam(':senha', $senha, PDO::PARAM_STR);
+        
+        $stmt->execute();
+		$stmt->nextRowset();
+		
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($resultado && isset($resultado['resulta'])) {
+			if ($resultado['resulta'] == 0) {
+				echo "REGISTROS ALTERADOS COM SUCESSO!";
+			} else {
+				echo "Erro: " . $resultado['mensa'];
+			}
+		} else {
+			echo "NENHUM VALOR FOI INSERIDO PARA A GRAVAÇÂO.";
+		}
+    } catch (PDOException $e) {
+        echo "Erro ao executar a procedure: " . $e->getMessage();
+    }
+}
+
+function gravarSerieAtividadeData($produto, $serie, $cdusuario, $senha, $lote, $tipo, $inicio, $fim, $forca) {
+	include("../lib/DB.php");
+    global $conn;
+
+    try {
+        // Validar senha
+        $mensa = ValidaSenha($cdusuario, $senha);
+		
+		if($mensa != ""){
+			echo "<script>parent.toastApp(3000,'***   SENHA INVÁLIDA   ***','ERRO')</script>";
+			return;
+		}
+
+        $stmt = $conn->prepare("DECLARE @resulta INT, @mensa VARCHAR(100);
+                                EXEC vendasPelicano.dbo.P0110_SERIE 
+                                    @produto = :produto, 
+                                    @lote = :lote, 
+                                    @serie = :serie, 
+                                    @tipo = :tipo, 
+                                    @inicio = :inicio, 
+                                    @fim = :fim, 
+                                    @forca = :forca,
+                                    @resulta = @resulta OUTPUT, 
+                                    @mensa = @mensa OUTPUT,
+                                    @cdusuario = :cdusuario, 
+                                    @senha = :senha;
+                                SELECT @resulta AS resulta, @mensa AS mensa;");
+								
+        $stmt->bindParam(':produto', $produto, PDO::PARAM_STR);
+        $stmt->bindParam(':lote', $lote, PDO::PARAM_INT);
+        $stmt->bindParam(':serie', $serie, PDO::PARAM_STR);
+        $stmt->bindParam(':tipo', $tipo, PDO::PARAM_INT);
+        $stmt->bindParam(':inicio', $inicio, PDO::PARAM_INT);
+        $stmt->bindParam(':fim', $fim, PDO::PARAM_INT);
+        $stmt->bindParam(':forca', $forca, PDO::PARAM_STR);
+        $stmt->bindParam(':cdusuario', $cdusuario, PDO::PARAM_INT);
+        $stmt->bindParam(':senha', $senha, PDO::PARAM_STR);
+        
+        $stmt->execute();
+        $stmt->nextRowset();
+        
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (isset($resultado['resulta'])) {
+            if ($resultado['resulta'] == 0) {
+                echo "REGISTROS ALTERADOS COM SUCESSO!";
+            } else {
+                echo "Erro: " . $resultado['mensa'];
+            }
+        } else {
+            echo "NENHUM VALOR FOI INSERIDO PARA A GRAVAÇÃO.";
+        }
+    } catch (PDOException $e) {
+        echo "Erro ao executar a procedure: " . $e->getMessage();
+    }
+}
+
+function carregaSerie($produtoSelecionado, $loteSelecionado) {
+    include("../lib/DB.php"); // Incluindo o arquivo de conexão com o banco
+    global $conn;
+
+    try {
+        // Preparar a query para executar a stored procedure
+        $query = "EXEC sgcr.crsa.PPST_SERIE @produto = :produto, @lote = :lote";
+
+        // Preparar a declaração PDO
+        $stmt = $conn->prepare($query);
+        // Associar os parâmetros da query
+        $stmt->bindParam(':produto', $produtoSelecionado, PDO::PARAM_STR);
+        $stmt->bindParam(':lote', $loteSelecionado, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // Obter o resultado da procedure, que será em XML
+        $xmlResult = "";
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $xmlResult .= $row['0'];
+        }
+
+		// Verifica se o resultado está vazio
+		if (empty($xmlResult)) {
+			echo "<script>
+				alert('NENHUMA SÉRIE ENCONTRADA PARA O PRODUTO " . addslashes($produtoSelecionado) . " NO LOTE " . addslashes($loteSelecionado) . ".');
+			</script>";
+			echo "<select id='cmbSerie' name='cmbSerie' class='form-control'><option value='0'></option></select>";
+		} else {
+			// Limpar espaços em branco e remover caracteres inesperados
+			$xmlResult = trim($xmlResult);
+
+			// Verifica se o XML retornado já contém uma tag raiz
+			if (!str_starts_with($xmlResult, "<root>")) {
+				$xmlResult = "<root>$xmlResult</root>";
+			}
+	
+			// Tenta carregar o XML
+			$xml = simplexml_load_string($xmlResult);
+	
+			// Construir o select de lotes
+			$select = "<select id='cmbSerie' name='cmbSerie' class='form-control'>";
+	
+			// Opção padrão
+			$select .= "<option value='0'>Selecione a Série</option>";
+	
+			// Preencher o select com os dados do XML
+			foreach ($xml->row as $row) {
+				$pst_serie = trim((string) $row['pst_serie']);
+				$numero = trim((string) $row['numero']);
+	
+				// Adicionar a opção ao select
+				$select .= "<option value='" . htmlspecialchars($pst_serie) . "'>" . htmlspecialchars($pst_serie) . " - " . htmlspecialchars($numero) . "</option>";
+			}
+	
+			$select .= "</select>";
+	
+			return $select;		
+		}
+	} catch (PDOException $e) {
+		// Caso ocorra um erro, retornar um select com mensagem de erro
+		return "<select id='cmbSerie' name='cmbSerie' class='form-control'><option value='0'>Erro ao executar a procedure: " . $e->getMessage() . "</option></select>";
+	}
+}
+
+function carregaTecnicoDefinicao() {
+    include("../lib/DB.php"); // Incluindo o arquivo de conexão com o banco
+    global $conn;
+
+    try {
+        // Preparar e executar a stored procedure
+        $stmt = $conn->prepare("EXEC crsa.P1110_USUARIOS_MMRD");  
+        $stmt->execute();
+
+        // Obtém o resultado da procedure, que deve ser em XML
+        $xmlResult = "";
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $xmlResult .= $row[0]; // Supondo que a coluna 0 contenha o XML
+        }
+
+        // Verifica se a procedure retornou algo
+        if (empty($xmlResult)) {
+            return "<select id='cmbTecnico' name='cmbTecnico' class='form-control'><option value='0'>Nenhum técnico encontrado</option></select>";
+        }
+
+        // Limpar espaços em branco e remover caracteres não esperados
+        $xmlResult = trim($xmlResult);        
+
+        // Verifica se o XML retornado já contém uma tag raiz
+        if (!str_starts_with($xmlResult, "<root>")) {
+            $xmlResult = "<root>$xmlResult</root>";
+        }
+
+        // Tenta carregar o XML
+        $xml = simplexml_load_string($xmlResult);
+        if (!$xml) {
+            return "<select id='cmbTecnico' name='cmbTecnico' class='form-control'><option value='0'>Erro ao converter XML</option></select>";
+        }
+
+        // Construir o select de técnicos
+        $select = "<select id='cmbTecnico' name='cmbTecnico' class='form-control'>";
+
+        // Opção padrão
+        $select .= "<option value='0'>Selecione o Técnico</option>";
+
+        foreach ($xml->row as $row) {
+            $usuarioId = trim((string) $row['p1110_usuarioid']);
+            $nome = trim((string) $row['p1110_nome']);
+            
+            // Adicionar a opção ao select
+            $select .= "<option value='" . htmlspecialchars($usuarioId) . "'>" . htmlspecialchars($nome) . "</option>";
+        }
+
+        $select .= "</select>";
+
+        return $select;
+    } catch (PDOException $e) {
+        return "<select id='cmbTecnico' name='cmbTecnico' class='form-control'><option value='0'>Erro ao executar a procedure: " . $e->getMessage() . "</option></select>";
+    }
+}
+
 
 function GravaLiberaArea(){
 	echo "fez<br>";
@@ -3956,6 +4431,40 @@ function CarregaFonteCalibCMB(){
 }
 
 
+function CarregaReconMatTalio()
+{
+	$tpst_numero = $_GET['pst_numero'];
+	include("../lib/DB.php");
+
+	$sql = "exec sgcr.[crsa].[uspReconcMat_TLCL3] " .$tpst_numero;
+	$stmt = $conn->prepare($sql);
+	$stmt->execute();
+
+	while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+		
+		if ($row["id"] == 1){
+			echo "<script>document.getElementById('nome1').innerText = '" . $row['nome'] . "'</script>";
+			echo "<script>document.getElementById('valor1').innerText = '".number_format($row['valor'],2, ',', '.')."'</script>";
+		}
+
+		if ($row["id"] == 2){
+			echo "<script>document.getElementById('nome2').innerText = '".$row['nome']."'</script>";
+			echo "<script>document.getElementById('valor2').innerText = '".number_format($row['valor'],2, ',', '.')."'</script>";
+		}
+
+		if ($row["id"] == 3){
+			echo "<script>document.getElementById('nome3').innerText = '".$row['nome']."'</script>";
+			echo "<script>document.getElementById('valor3').innerText = '".number_format($row['valor'],2, ',', '.')."'</script>";
+		}
+		if ($row["id"] == 4){
+			echo "<script>document.getElementById('nome4').innerText = '".$row['nome']."'</script>";
+			echo "<script>document.getElementById('valor4').innerText = '".number_format($row['valor'],2, ',', '.')." %'</script>";
+		}
+
+	}
+
+}
+
 function CarregaReconMat(){
 	$tpst_numero = $_GET['pst_numero'];
 	include("../lib/DB.php");
@@ -4868,7 +5377,43 @@ function carregaCalcFolhaTalio($pst_numero){
 		echo "<script>document.getElementById('txtcrmedida').value = '" . $row['p638_CR6a'] . "'</script>";
 		echo "<script>document.getElementById('txtDtCrMedida').value = '" . $p4 . "'</script>";
 		echo "<script>document.getElementById('txtVolumeFinal').value = '" .  $row['p638_vtot'] . "'</script>";
+		echo "<script>document.getElementById('txtConcRadio').value = '" .  $row['p638_CRpadrao'] . "'</script>";
+		echo "<script>document.getElementById('txtPH').value = '" .  $row['p638_ph'] . "'</script>";
+		echo "<script>document.getElementById('txtAtvTotSol').value = '" .  $row['p638_vtot'] . "'</script>";
+		echo "<script>document.getElementById('txtCloretoSodio').value = '" .  number_format($row['p638_nacl_9pc'],2) . "'</script>";
+		echo "<script>document.getElementById('txtSobraVal').value = '" . $row['p638_SobraAtv'] . "'</script>";
+		echo "<script>document.getElementById('txtSobraVol').value = '" . $row['p638_SobraVol'] . "'</script>";
+		echo "<script>document.getElementById('txtIniAutoClav').value = '" . $row['p638_autoc_ini'] . "'</script>";
+		echo "<script>document.getElementById('txtTempIniAutoClav').value = '" . number_format($row['p638_autoc_temp_ini'],0) . "'</script>";
+		echo "<script>document.getElementById('txtFimAutoClav').value = '" . $row['p638_autoc_fim'] . "'</script>";
+		echo "<script>document.getElementById('txtTempFimAutoClav').value = '" . number_format($row['p638_autoc_temp_fim'],0) . "'</script>";
+		echo "<script>document.getElementById('txtPressIni').value = '" . number_format($row['p638_autoc_press_ini'],2) . "'</script>";
+		echo "<script>document.getElementById('txtPressFim').value = '" . number_format($row['p638_autoc_press_fim'],2) . "'</script>";
+		if ($row['p638_autoc_flg_regproc'] == 'S')
+		{echo "<script>document.getElementById('txtImpAutClavS').checked = true</script>";}
+		else
+		{echo "<script>document.getElementById('txtImpAutClavN').checked = true</script>";}
+
+		if ($row['p638_autoc_flg_ocorr'] == 'S')
+		{echo "<script>document.getElementById('txtOcorrAutClavS').checked = true</script>";}
+		else
+		{echo "<script>document.getElementById('txtOcorrAutClavN').checked = true</script>";}
+		
+		echo "<script>document.getElementById('txtOcorrencia').value = '" . $row['p638_autoc_ocorr'] . "'</script>";
+
 		}
+
+
+		/**
+		 * traz o dados dos importados (infRadio)
+		 */
+		$query = "select SUM(ativ) ativ, SUM(volu) volu from crsa.T643_I131_InformRadioisotopo where pst_numero  = " .$pst_numero;
+		$stmt = $conn->query($query);
+		while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			echo "<script>document.getElementById('txtAtvImp').value = '" . $row['ativ'] . "'</script>";
+			echo "<script>document.getElementById('txtVolImp').value = '" . $row['volu'] . "'</script>";
+		}
+
 	}
 	
 	function carregaCalcFolhaGalio($pst_numero){
@@ -5017,20 +5562,103 @@ if(isset($_POST["RetornaUsuariosAssocCMB"])){
 
 if(isset($_POST["gravadiluTalio"])){
 
-	//procedure original P0638_TALIO 
+	//procedure original            P0638_TALIO 
+	//procedure alterada [crsa].[uspP0638_TALIO]
 	print_r('grava dilu talio<hr>');
 	//print_r($_POST);
-	print_r($_POST['txtTalioId'].'<br>');
-	print_r($_POST['txtpst_numero'].'<br>');
-	print_r($_POST['txtPH'].'<br>');
-    print_r($_POST);
+	//print_r($_POST['txtTalioId'].'<br>');
+	//print_r($_POST['txtpst_numero'].'<br>');
+	//print_r($_POST['txtPH'].'<br>');
+    //print_r($_POST);
+
+	// ===== VALIDAÇÃO DO CAMPO PH =====
+	// Verificar se PH foi enviado e não está vazio
+	if (!isset($_POST['txtPH']) || trim($_POST['txtPH']) === '' || $_POST['txtPH'] === null) {
+		echo "<script>parent.toastApp(3000,'***   CAMPO PH É OBRIGATÓRIO E NÃO PODE ESTAR VAZIO   ***','ERRO')</script>";
+		return;
+	}
+	
+	// Validar se PH é um número válido
+	$ph_value = floatval($_POST['txtPH']);
+	if (!is_numeric($_POST['txtPH']) || $ph_value <= 0) {
+		echo "<script>parent.toastApp(3000,'***   CAMPO PH DEVE SER UM NÚMERO VÁLIDO   ***','ERRO')</script>";
+		return;
+	}
+	
+	// Validar range do PH (4,5 a 7,5)
+	if ($ph_value < 4.5 || $ph_value > 7.5) {
+		echo "<script>parent.toastApp(3000,'***   VALOR DO PH DEVE ESTAR ENTRE 4,5 E 7,5   ***','ERRO')</script>";
+		return;
+	}
+	// ===== FIM DA VALIDAÇÃO DO PH =====
+
+	$mensa = ValidaSenha($_POST['cmbTecnico'], $_POST['txtSenha']);
+	if($mensa != ""){
+		echo "<script>parent.toastApp(3000,'***   SENHA INVÁLIDA   ***','ERRO')</script>";
+		return;
+	}
+
+
+	$txtDtCrMedida = $_POST['txtDtCrMedida'];
+	$txtDtCrMedida = str_replace("-","",$txtDtCrMedida);
+	$txtDtCrMedida = str_replace("T"," ",$txtDtCrMedida);
+	$query = "exec crsa.uspP0638_TALIO ";
+	$query .= "@p638_TalioID = ".$_POST['txtTalioId'].",";
+	$query .= "@pst_numero = ".$_POST['txtpst_numero'].',';
+	$query .= "@p638_imp_atvm  = ".$_POST['txtAtvImp'].',';
+	$query .= "@p638_imp_volm  = ".$_POST['txtVolImp'].',';
+	$query .= "@p638_imp_dtclm  = '".$txtDtCrMedida."',";
+	$query .= "@p638_imp_Fatorm  = 1,";
+	$query .= "@p638_ipen_atvm  = null,";
+	$query .= "@p638_ipen_volm  = null,";
+	$query .= "@p638_ipen_dtclm  = null,";
+	$query .= "@p638_ipen_Fatorm  = 1,";
+	$query .= "@p638_sb_atvm  = ".$_POST['txtSobraVal'].',';
+	$query .= "@p638_sb_volm  = ".$_POST['txtSobraVol'].',';
+	$query .= "@p638_sb_dtclm  = null,";
+	$query .= "@p638_sb_Fatorm  = 1,";
+	$query .= "@p638_CR6a  = ".$_POST['txtcrmedida'].',';
+	$query .= "@p638_dtcl6a  = '".$txtDtCrMedida."',";
+	$query .= "@p638_CRpadrao  = ".$_POST['crvoldtcal'].',';
+	$query .= "@p638_vnacl  = ".$_POST['txtVolumeFinal'].',';
+	$query .= "@p638_fator  = ".$_POST['fator_decai'].',';
+	$query .= "@p638_vtot  = ".$_POST['txtVolumeFinal'].',';
+	$query .= "@p638_SobraAtv  = ".$_POST['txtSobraVal'].',';
+	$query .= "@p638_SobraVol  = ".$_POST['txtSobraVol'].',';
+	$query .= "@p638_TecnicoObs  = null,";
+	$query .= "@p638_TecnicoRsp  = ".$_POST['cmbTecnico'].',';
+	$query .= "@p638_TecnicoData  = null,";
+	$query .= "@recalculo  = 1,";
+	$query .= "@p638_ph  = ".$_POST['txtPH'].',';
+	$query .= "@cdusuario  = ".$_POST['cmbTecnico'].',';
+	$query .= "@senha  = '".$_POST['txtSenha']."',";
+	$query .= "@p638_nacl_9pc  = '".$_POST['txtCloretoSodio']."',";
+	$query .= "@p638_autoc_ini  = '".$_POST['txtIniAutoClav']."',";
+	$query .= "@p638_autoc_temp_ini  = '".$_POST['txtTempIniAutoClav']."',";
+	$query .= "@p638_autoc_fim  = '".$_POST['txtFimAutoClav']."',";
+	$query .= "@p638_autoc_temp_fim  = '".$_POST['txtTempFimAutoClav']."',";
+	$query .= "@p638_autoc_press_ini  = '".$_POST['txtPressIni']."',";
+	$query .= "@p638_autoc_press_fim  = '".$_POST['txtPressFim']."',";
+	$query .= "@p638_autoc_flg_regproc  = '".$_POST['txtImpAutClav']."',";
+	$query .= "@p638_autoc_flg_ocorr  = '".$_POST['txtOcorrAutClav']."',";
+	$query .= "@p638_autoc_ocorr  = '".$_POST['txtOcorrencia']."',";
+	$query .= "@resulta  = null,";
+	$query .= "@mensa  = null";
+
+	$stmt = $conn->query($query);
+
+	echo "<script>parent.toastApp(3000,'***   REGISTRO GRAVADO COM SUCESSO   ***','OK')</script>";
+
 }
+
+
+
 
 if(isset($_POST["gravadiluGalio"])){
 	print_r('grava dilu galio<hr>');
-	//print_r($_POST);
-	//print_r($_POST['cmbTecnico']);
-	//print_r($_POST['txtSenha']);
+	print_r($_POST);
+	print_r($_POST['cmbTecnico']);
+	print_r($_POST['txtSenha']);
 	$mensa = ValidaSenha($_POST['cmbTecnico'], $_POST['txtSenha']);
 	if($mensa != ""){
 		echo "<script>parent.toastApp(3000,'***   SENHA INVÁLIDA   ***','ERRO')</script>";
@@ -5092,9 +5720,9 @@ if(isset($_POST["gravadiluGalio"])){
 	$query .= "@p607_cdusuario = '" .$_POST['cmbTecnico']."'";
 
 
+	echo $query;
 
-
-	//var_dump($_POST);
+	var_dump($_POST);
 	
 	
 	
@@ -5219,5 +5847,3 @@ function converteTagToArrays($txtTag, $selecionado = false): array
 	return $newArray;
 }
  
-
-

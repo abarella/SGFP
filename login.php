@@ -63,9 +63,11 @@
     <div class="fixed">
         <a class="pull-left" href="#"><img
                 src="img/logo_novo.png"></a>
+        <div style="text-align: center; position: absolute; width: 100%; left: 0; top: 50%; transform: translateY(-50%);">
+            <h4 class="hidden-phone" style="margin: 0; color: #fff; font-size: 1.8rem;">SGCR - Folha de Produção</h4>
+        </div>
         <ul class="top-menu">
             <li>
-                <h4 class="pull-left hidden-phone">SGCR - Folha de Produção</h4>
             </li>
                     </ul>
     </div>

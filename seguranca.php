@@ -17,7 +17,7 @@ $_SG['validaSempre'] = true;       // Deseja validar o usuário e a senha a cada
 // Evita que, ao mudar os dados do usuário no banco de dado o mesmo contiue logado.
 $_SG['rf'] =  "http://".$_SERVER['HTTP_HOST']."/";
 //$_SG['report_site'] = "'http://colibriapp:8084/'";
-$_SG['report_site'] = "'http://hm-relatorios.ipen.br/gerenciador/report/SGCR/'";
+$_SG['report_site'] = "'http://dev-relatorios.ipen.br/consulta/Pages/ReportViewer.aspx?'";
 $_SG['paginaLogin'] = $_SG['rf'].'login.php'; // Página de login
 
 $_SG['tabela'] = 'usuario';       // Nome da tabela onde os usuários são salvos
@@ -49,7 +49,7 @@ if ($_SG['abreSessao'] == true)
   ini_set( "session.cookie_lifetime", $timeout );
   
   session_start();
-  $_SESSION['PATH_RELATORIO'] = 'http://hm-relatorios.ipen.br/gerenciador/report/SGCR/';
+  $_SESSION['PATH_RELATORIO'] = 'http://dev-relatorios.ipen.br/consulta/Pages/ReportViewer.aspx?';
 
 
 
@@ -82,16 +82,29 @@ function validaUsuario($usuario, $senha) {
 
   //$sql = 'SELECT top 1 id, nome FROM usuario where usuario = \'' . $nusuario . '\' and senha = \'' . $nsenha . '\'';
   $sql = "exec crsa.uspP1110_Login  @login = '" . $nusuario . "' , @p1110_senha = '" . $nsenha . "', @grupo='', @resulta='', @mensa='' ";
-  $stmt = $conn->query($sql);
-  $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
-
+  
+  try {
+    $stmt = $conn->query($sql);
+    if ($stmt === false) {
+      return false;
+    }
+    $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+  } catch (PDOException $e) {
+    // Se houver erro na execução ou se não houver campos no resultado
+    return false;
+  }
 
   // Verifica se encontrou algum registro
-  if (empty($resultado)) {
+  if ($resultado === false || empty($resultado) || !isset($resultado['cdusuario'])) {
       return false;
   } else {
     $_SESSION['usuarioID'] = $resultado['cdusuario']; // Pega o valor da coluna 'id do registro encontrado no MySQL
-    $_SESSION['usuarioNome'] = $nusuario; // Pega o valor da coluna 'nome' do registro encontrado no MySQL
+
+    $sql1 = "select p1110_nome from crsa.T1110_USUARIOS where p1110_usuarioid=" .$resultado['cdusuario'];
+    $stmt1 = $conn->query($sql1);
+    $resultado1 = $stmt1->fetch(PDO::FETCH_ASSOC);
+
+    $_SESSION['usuarioNome'] = $resultado1['p1110_nome']; // Pega o valor da coluna 'nome' do registro encontrado no MySQL
 
     // Verifica a opção se sempre validar o login
     if ($_SG['validaSempre'] == true) {

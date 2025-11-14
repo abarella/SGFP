@@ -15,7 +15,7 @@
 
         const windowFeatures = "left=0,top=0,width=940px,height=620";
         //window.open(<?php echo $_SG['report_site']; ?>+ "?report=repo1&id="+id,"_report", windowFeatures)
-        window.open("<?php echo $_SESSION['PATH_RELATORIO']; ?>" +"FM-DIRF-0901-04?p600_checklist_id="+id+"&rs:Command=Render", "vcd")
+        window.open("<?php echo $_SESSION['PATH_RELATORIO']; ?>" +"?/0300-RADIOFARMACIA/01-SGCR/01-FOLHADEPRODUCAO/99-GERAL/FM-DIRF-0901-04&p600_checklist_id="+id+"&rs:Command=Render", "vcd")
     }
 
     function fu_abreVol(id){
@@ -54,8 +54,7 @@ function fu_abreLPZ(){
 
     function fu_imprimeVCD(){
         pstnumero = '<?php echo $_GET['pst_numero']; ?>'
-
-        window.open("<?php echo $_SESSION['PATH_RELATORIO']; ?>" +"fm-dirf-0901.02-01v3?pst_numero="+pstnumero+"&rs:Command=Render", "vcd")
+        window.open("<?php echo $_SESSION['PATH_RELATORIO']; ?>" +"?/0300-RADIOFARMACIA/01-SGCR/01-FOLHADEPRODUCAO/99-GERAL/fm-dirf-0901.02-01v3&pst_numero="+pstnumero+"&rs:Command=Render", "vcd")
 
     }
 

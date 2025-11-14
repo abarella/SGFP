@@ -74,7 +74,7 @@ include("../header.php");
 </div>
 
 <?php include("../footer.php");?>
-<iframe name="processar" id="processar" style="display:inline"></iframe>
+<iframe name="processar" id="processar" style="display:none"></iframe>
 
 <!-- Modal -->
 <div class="modal fade" id="ModalAc" tabindex="-1" role="dialog" aria-labelledby="ModalAcLabel" aria-hidden="true">

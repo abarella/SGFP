@@ -72,24 +72,29 @@ function fuAbre(nlote, ntipo,produto, ano, pst_numero){
 
 	if(ntipo == 'I1'){
 		if(produto=='rd_i131') {
-			window.open("<?php echo $_SESSION['PATH_RELATORIO']; ?>" +"fm-cr-p03.11-01v7?pst_numero="+pst_numero+"&tipo=1&rs:Command=Render", "vcd")
+			window.open("<?php echo $_SESSION['PATH_RELATORIO']; ?>" +"/0300-RADIOFARMACIA/01-SGCR/01-FOLHADEPRODUCAO/02-IODO/fm-cr-p03.11-01v7&pst_numero="+pst_numero+"&tipo=1&rs:Command=Render", "vcd")
 		}
 		if(produto=='rd_ga67') {
-			window.open("<?php echo $_SESSION['PATH_RELATORIO']; ?>" +"RelatProducaoGALIO?pst_numero="+pst_numero+"&rs:Command=Render", "vcd")
+			window.open("<?php echo $_SESSION['PATH_RELATORIO']; ?>" +"/0300-RADIOFARMACIA/01-SGCR/01-FOLHADEPRODUCAO/01-GALIO/FMCRP031201V7&pst_numero="+pst_numero+"&rs:Command=Render", "vcd")
 		}
 
-
-
+		if(produto=='rd_tl') {
+			window.open("<?php echo $_SESSION['PATH_RELATORIO']; ?>" +"/0300-RADIOFARMACIA/01-SGCR/01-FOLHADEPRODUCAO/03-TALIO/RelatProducaoTALIO&pst_numero="+pst_numero+"&rs:Command=Render", "vcd")
+		}
 	}
 
 	if(ntipo == 'I2'){
 		if(produto=='rd_i131') {
-			window.open("<?php echo $_SESSION['PATH_RELATORIO']; ?>" +"RelatProducaoIODO?pst_numero="+pst_numero+"&rs:Command=Render", "vcd")
+			window.open("<?php echo $_SESSION['PATH_RELATORIO']; ?>" +"/0300-RADIOFARMACIA/01-SGCR/01-FOLHADEPRODUCAO/02-IODO/RelatProducaoIODO&pst_numero="+pst_numero+"&rs:Command=Render", "vcd")
 		}
-		if(produto=='rd_tl') {
-			window.open("<?php echo $_SESSION['PATH_RELATORIO']; ?>" +"RelatProducaoTALIO?pst_numero="+pst_numero+"&rs:Command=Render", "vcd")
+		if(produto=='rd_ga67') {
+			window.open("<?php echo $_SESSION['PATH_RELATORIO']; ?>" +"/0300-RADIOFARMACIA/01-SGCR/01-FOLHADEPRODUCAO/01-GALIO/RelatProducaoGALIO&pst_numero="+pst_numero+"&rs:Command=Render", "vcd")
 		}
 
+		if(produto=='rd_tl') {
+			window.open("<?php echo $_SESSION['PATH_RELATORIO']; ?>" +"/0300-RADIOFARMACIA/01-SGCR/01-FOLHADEPRODUCAO/03-TALIO/RelatProducaoTALIO&pst_numero="+pst_numero+"&rs:Command=Render", "vcd")
+		}
+		
 		
 	}
 

@@ -30,7 +30,7 @@ $prod = $_REQUEST['produto'];
         const windowFeatures = "left=0,top=0,width=940px,height=620";
 
         if (produto=="rd_i131"){
-            window.open("<?php echo $_SESSION['PATH_RELATORIO']; ?>" +"RelatProducaoIODO?pst_numero="+pstnumero+"&rs:Command=Render", "vcd")
+            window.open("<?php echo $_SESSION['PATH_RELATORIO']; ?>" +"/0300-RADIOFARMACIA/01-SGCR/01-FOLHADEPRODUCAO/02-IODO/RelatProducaoIODO&pst_numero="+pstnumero+"&rs:Command=Render", "vcd")
             
         }
         if (produto=="rd_tl"){
@@ -44,11 +44,11 @@ $prod = $_REQUEST['produto'];
         pstnumero = '<?php echo $_GET['pst_numero']; ?>'
         produto =  '<?php echo $_GET['produto']; ?>'
         if (produto=="rd_i131"){
-            window.open("<?php echo $_SESSION['PATH_RELATORIO']; ?>" +"RelatProducaoIODO?pst_numero="+pstnumero+"&rs:Command=Render", "vcd")
+            window.open("<?php echo $_SESSION['PATH_RELATORIO']; ?>" +"/0300-RADIOFARMACIA/01-SGCR/01-FOLHADEPRODUCAO/02-IODO/RelatProducaoIODO&pst_numero="+pstnumero+"&rs:Command=Render", "vcd")
         }
         if (produto=="rd_tl"){
 
-            window.open("<?php echo $_SESSION['PATH_RELATORIO']; ?>" +"RelatProducaoTALIO?pst_numero="+pstnumero+"&rs:Command=Render", "vcd")
+            window.open("<?php echo $_SESSION['PATH_RELATORIO']; ?>" +"/0300-RADIOFARMACIA/01-SGCR/01-FOLHADEPRODUCAO/03-TALIO/RelatProducaoTALIO&pst_numero="+pstnumero+"&rs:Command=Render", "vcd")
         }
 
 

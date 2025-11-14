@@ -25,7 +25,7 @@
         if(_pg=='f18'){window.open('GQ.php'+'?'+params, '_self')} //esterilização talio
         if(_pg=='f19'){window.open('Amostras.php'+'?'+params, '_self')} //Amostras talio
         if(_pg=='f20'){window.open('GQ.php'+'?'+params, '_self')} //Fracionamento Emb. Primaria talio
-        if(_pg=='f21'){window.open('GQ.php'+'?'+params, '_self')} //Reconciliação de materiais talio
+        if(_pg=='f21'){window.open('ReconMateriais.php'+'?'+params, '_self')} //Reconciliação de materiais talio
 
         if(_pg=='f22'){window.open('DiluicoesGalio.php'+'?'+params, '_self')}
 
@@ -67,10 +67,10 @@
         <button type="button" id="f04" class="btn btn-outline-info btn-xs" onclick="abrePg('f04')">Equipamentos</button>
         <button type="button" id="f05" class="btn btn-outline-info btn-xs" onclick="abrePg('f05')">Materiais</button>
         <button type="button" id="f06" class="btn btn-outline-info btn-xs" onclick="abrePg('f06')">Inf. Radioisótopos</button>
-        <button type="button" id="f17" class="btn btn-outline-info btn-xs" onclick="abrePg('f17')">Procedimentos</button>
+        
     </div>
     <div class="btn-group btn-block btn-flat ">
-        <button type="button" id="f18" class="btn btn-outline-info btn-xs" onclick="abrePg('f18')">Esterilização (Autoclavagem)</button>
+        <button type="button" id="f17" class="btn btn-outline-info btn-xs" onclick="abrePg('f17')">Procedimentos</button>
         <button type="button" id="f19" class="btn btn-outline-info btn-xs" onclick="abrePg('f19')">Amostras</button>
         <button type="button" id="f21" class="btn btn-outline-info btn-xs" onclick="abrePg('f21')">Reconciliação</button>
         <button type="button" id="f11" class="btn btn-outline-info btn-xs" onclick="abrePg('f11')">Operadores Participantes</button>

@@ -346,7 +346,7 @@ function alteraIR(nr_ID, nome_lote, ativ, volu, dtreceb, dtcalib, vlmedida, dtme
                             Nome:<br><input type='text' class="form-control" name='txtNomeFornecedor1' id='txtNomeFornecedor1'  value="<?php echo $fornec1; ?>" />
                     </div>
                     <div class="col-md-4 xborder xbtn-trans ">
-                            Atividade Total Importada (mCi):<br><input type='number' class="form-control" name='txtAtvTotImp1' id='txtAtvTotImp1'  value="<?php echo $ativ1; ?>" />
+                            Atividade Total Importada (mCi):<br><input type='number' class="form-control" name='txtAtvTotImp1' id='txtAtvTotImp1' step='0.01' placeholder='0.00'  value="<?php echo $ativ1; ?>" />
                     </div>
                     <div class="col-md-4 xborder xbtn-trans">
                             Volume (mL):<br><input type='number' name='txtVolume1' class="form-control" step='0.01' placeholder='0.00' id='txtVolume1'   onkeyup="calcula1()"  value="<?php echo $volu1; ?>"/>
@@ -365,7 +365,7 @@ function alteraIR(nr_ID, nome_lote, ativ, volu, dtreceb, dtcalib, vlmedida, dtme
 
                 <div class="row">
                     <div class="col-md-4 xborder xbtn-trans ">
-                        Medida na Data da Programação (mCi):<br><input type='number' class="form-control" name='txtMedDtProg1' id='txtMedDtProg1'  onkeyup="calcula1()"  value="<?php echo $vlmedida1; ?>"  />
+                        Medida na Data da Programação (mCi):<br><input type='number' class="form-control" name='txtMedDtProg1' id='txtMedDtProg1' step='0.01' placeholder='0.00'  onkeyup="calcula1()"  value="<?php echo $vlmedida1; ?>"  />
                     </div>
 
                     <div class="col-md-4 xborder xbtn-trans ">

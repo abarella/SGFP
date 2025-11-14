@@ -1,0 +1,331 @@
+/* ========================================================
+*
+* Estilos para serem usados na configuração do galpão
+*
+* ========================================================*/
+
+.galpao-hand, .empilhamento-hand, .posicao-hand, .lnkVerRejeito {
+    cursor: pointer;
+}
+
+.lnkPosicao {
+    padding: 5px;
+    color: #fff;
+}
+
+.lnkPosicaoRN {
+    padding: 5px;
+    color: #fff;
+}
+
+.galpao-posicao-titulo {
+    padding: 5px;
+}
+
+.galpao-contorno {
+    border: 3px solid #33be40;
+}
+
+.modal-body {
+    overflow-x: auto;
+}
+
+.quadro-left {
+    display: inline-block;
+    margin: 0 5% 0 0;
+}
+
+.quadro-left:nth-child(2n+0) {
+    margin: 0 1% 0 0;
+}
+
+/* ========================================================================== */
+/* Define o conteúdo do galpão */
+/* ========================================================================== */
+#containerGalpao {
+    overflow: auto;
+    width: 600px;
+    max-height: 300px;
+}
+
+#containerGalpaoSub {
+    max-height: 300px;
+    white-space: nowrap;
+}
+
+/* Define o conteudo da prateleira */
+#containerPrateleira {
+    display: table;
+    margin: 0 auto;
+    width: 30px;
+}
+
+#containerPrateleira div {
+    width: 30px;
+}
+
+/* Define o conteudo do empilhamento do galpão */
+#containerEmpilhamento {
+    display: inline-block;
+    margin: 0 auto;
+    border-bottom: #ccc;
+}
+
+.nrEmpilhamento {
+    border: 1px solid #ccc;
+    margin-bottom: 2px;
+}
+
+/* Define o conteudo dos armazenamentos de um empilhamento do galpão */
+#containerArmazenamento {
+    width: 20%;
+    padding: 50px;
+    margin: 0 auto;
+}
+
+#containerArmazenamentoCO{
+    width: 100%;
+    margin: 0 auto;
+}
+
+.nrArmazenamento {
+    border: 1px solid #ccc;
+    margin-bottom: 2px;
+}
+
+.nrArmazenamentoRT {
+}
+
+.nrArmazenamentoRT > div {
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.nrArmazenamentoRT > div.selecionado {
+}
+
+/* Define o conteudo dos rejeitos que estão dentro de um armazenamento */
+#containerRejeito {
+    display: table;
+}
+
+.nrRejeito {
+    margin-bottom: 2px;
+}
+
+.selecionado {
+    -webkit-box-shadow: inset 0px 0px 0px 3px #33be40;
+    -moz-box-shadow: inset 0px 0px 0px 3px #33be40;
+    box-shadow: inset 0px 0px 0px 3px #33be40;
+}
+
+.marcacao {
+    -webkit-box-shadow: inset 0px 0px 0px 3px #ff0000;
+    -moz-box-shadow: inset 0px 0px 0px 3px #ff0000;
+    box-shadow: inset 0px 0px 0px 3px #ff0000;
+}
+
+/* ========================================================================== */
+/* Define a cor das posições do galpão */
+/* ========================================================================== */
+.galpao-posicao-titulo,
+.galpao-posicao-vermelho,
+.galpao-posicao-cinza {
+    width: 20px;
+    height: 20px;
+    margin: 1px 1px;
+    float: left;
+    line-height: 20px;
+
+}
+
+/* Define as cores das posições do galpão */
+.galpao-posicao-titulo {
+    background-color: white;
+}
+
+.galpao-posicao-vermelho {
+    background-color: red;
+}
+
+.galpao-posicao-cinza {
+    background-color: gray;
+}
+
+/* ========================================================================== */
+/* Define tipo de armazenamento (tipo REJEITO NÃO TRATADO) nos empilhamentos */
+/* ========================================================================== */
+.empilhamento-padrao-vermelho,
+.empilhamento-padrao-cinza,
+.empilhamento-padrao-azul,
+.empilhamento-padrao-branco,
+.empilhamento-padrao-verde {
+    width: 15px;
+    height: 23px;
+    margin: 3px;
+    text-align: center;
+    vertical-align: central;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Define as cores dos tipos de armazenamento nos empilhamentos */
+.empilhamento-padrao-vermelho {
+    background: red
+}
+
+.empilhamento-padrao-cinza {
+    background: gray
+}
+
+.empilhamento-padrao-azul {
+    background: #0480be
+}
+
+.empilhamento-padrao-branco {
+    background: #E2E2E2
+}
+
+.empilhamento-padrao-verde {
+    background: #33be40
+}
+
+/* ========================================================================== */
+/* Define tipo de armazenamento (tipo CAIXA) nos empilhamentos */
+/* ========================================================================== */
+.empilhamento-caixa-vermelho,
+.empilhamento-caixa-cinza,
+.empilhamento-caixa-azul,
+.empilhamento-caixa-branco,
+.empilhamento-caixa-verde {
+    width: 20px;
+    height: 20px;
+    margin: 3px;
+    text-align: center;
+    vertical-align: central;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Define as cores dos tipos de armazenamento nos empilhamentos */
+.empilhamento-caixa-vermelho {
+    background: url(../img/galpao/cubo-vermelho.png)
+}
+
+.empilhamento-caixa-cinza {
+    background: url(../img/galpao/cubo-cinza.png)
+}
+
+.empilhamento-caixa-azul {
+    background: url(../img/galpao/cubo-azul.png)
+}
+
+.empilhamento-caixa-branco {
+    background: url(../img/galpao/cubo-branco.png);
+}
+
+.empilhamento-caixa-verde {
+    background: url(../img/galpao/cubo-verde.png);
+}
+
+/* ========================================================================== */
+/* Define tipo de armazenamento (tipo TAMBOR) nos empilhamentos */
+/* ========================================================================== */
+.empilhamento-tambor-vermelho,
+.empilhamento-tambor-cinza,
+.empilhamento-tambor-azul,
+.empilhamento-tambor-branco,
+.empilhamento-tambor-verde {
+    width: 16px;
+    height: 24px;
+    margin: 3px;
+    text-align: center;
+    vertical-align: central;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Define as cores dos tipos de armazenamento nos empilhamentos */
+.empilhamento-tambor-vermelho {
+    background: url(../img/galpao/tambor-vermelho.png)
+}
+
+.empilhamento-tambor-cinza {
+    background: url(../img/galpao/tambor-cinza.png)
+}
+
+.empilhamento-tambor-azul {
+    background: url(../img/galpao/tambor-azul.png)
+}
+
+.empilhamento-tambor-branco {
+    background: url(../img/galpao/tambor-branco.png);
+}
+
+.empilhamento-tambor-verde {
+    background: url(../img/galpao/tambor-verde.png);
+}
+
+/* ========================================================================== */
+/* Define tipo de armazenamento (tipo COLMÉIA) nos empilhamentos */
+/* ========================================================================== */
+.empilhamento-colmeia-vermelho,
+.empilhamento-colmeia-cinza,
+.empilhamento-colmeia-azul,
+.empilhamento-colmeia-branco,
+.empilhamento-colmeia-verde {
+    width: 22px;
+    height: 23px;
+    margin: 2px;
+    text-align: center;
+    vertical-align: central;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: inline-block;
+}
+
+/* Define as cores dos tipos de armazenamento nos empilhamentos */
+.empilhamento-colmeia-vermelho {
+    background: url(../img/galpao/colmeia-vermelho.png)
+}
+
+.empilhamento-colmeia-cinza {
+    background: url(../img/galpao/colmeia-cinza.png)
+}
+
+.empilhamento-colmeia-azul {
+    background: url(../img/galpao/colmeia-azul.png)
+}
+
+.empilhamento-colmeia-branco {
+    background: url(../img/galpao/colmeia-branco.png);
+}
+
+.empilhamento-colmeia-verde {
+    background: url(../img/galpao/colmeia-verde.png);
+}
+
+.linhaColmeia {
+    text-align: center;
+}
+
+/* ========================================================================== */
+/* Define estilo para as prateleiras */
+/* ========================================================================== */
+.prateleira-ativado,
+.prateleira-desativado {
+    width: 30px;
+    height: 30px;
+    margin: 3px;
+    text-align: center;
+    vertical-align: central;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url(../img/prateleira.png);
+    background-size: 30px 30px;
+}
+
+.prateleira-desativado {
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+}

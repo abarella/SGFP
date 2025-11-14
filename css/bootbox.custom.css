@@ -1,0 +1,49 @@
+.modal.modal-small {
+    width:24%;
+    left:0;
+    margin-left:38%;
+}
+
+.modal-small .modal-body {
+    overflow-y: auto;
+}
+
+.modal.modal-medium{
+    width:48%;
+    left:0;
+    margin-left:26%;
+}
+
+.modal-medium .modal-body {
+    overflow-y: auto ;
+}
+
+.modal.modal-large{
+    width:76%;
+    left:0;
+    margin-left:12%;
+}
+
+.modal-large .modal-body {
+    overflow-y: auto ;
+}
+
+.modal.modal-x-large{
+    width:96%;
+    left:0;
+    margin-left:2%;
+}
+
+.modal-x-large .modal-body {
+    overflow-y: auto ;
+}
+
+.modal.modal-wide{
+    width:99%;
+    left:0;
+    margin-left:0.5%;
+}
+
+.modal-wide .modal-body {
+    overflow-y: auto ;
+}

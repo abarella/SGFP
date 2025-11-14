@@ -1,0 +1,770 @@
+crsa.P0647_PEDIDO_INTERNO
+crsa.P0600_EQPTO_I
+crsa.uspP0110_LOTE_NUMERO
+vendasPelicano.dbo.uspP1110_confsenha
+crsa.P0600_EQPTO_E
+crsa.P0643_I131_LIBERAAREA
+crsa.P0643_TLCL3_LIBERAAREA 
+crsa.P0643_I131_EMBPRIMARIA
+crsa.P0643_TLCL3_EMBPRIMARIA
+crsa.P0643_I131_InformRadioisotopo
+sgcr.crsa.uspP0110_PEDIDOS_CONTA 
+crsa.fn_LotesAtendidos
+crsa.uspP0600_EQPTO_LISTA
+crsa.uspP0026_EQPTO_CATEGORIA 
+crsa.uspP0600_LISTA_CELA
+crsa.uspP0705_LISTA
+crsa.uspP0110_ATIVIDADE_SOLICITADA
+crsa.uspP0600_FRACIONAMENTO_RD
+crsa.P1110_CONFSENHA
+crsa.P1500_Equipamento
+crsa.uspMateriais 
+crsa.uspP1110_USUARIOS 
+crsa.uspP1110_USUARIOS_I131
+crsa.uspP0184_Recebimento_lista
+crsa.uspP0640_ENVIO_LISTA2
+crsa.uspP0608_SOBRAS_LISTA
+crsa.uspP0641_I131_LISTA
+crsa.uspP0602_FD_LISTA
+crsa.uspP0642_I131_LISTA
+crsa.uspP0647_Pedido_Interno
+crsa.uspPPST_PRODUCAO_LISTA 
+crsa.P0642_GRAVA
+crsa.uspP0015_MARCA_LISTA 
+crsa.uspP0030_MATERIAL_TIPO 
+crsa.uspP0600_MATERIAL_SELlote
+crsa.T643_FonteCalibracao
+crsa.P0600_EQPTO_LISTA_CALIB
+crsa.uspP0600_MATERIAIS
+crsa.uspP1110_RESPONSAVEL_AREA
+crsa.uspP0070_STATUS_RD
+crsa.uspPPST_PRODUCAO_LISTA2
+crsa.uspP1110_USUARIOS_SEL006
+crsa.uspPPST_ULTIMA_ATUALIZACAO
+crsa.uspP0095_Operadores
+crsa.uspDashboardSGFP
+crsa.uspP0111_ESCALA_SEMANAL
+crsa.uspPEscalaUsuarios
+crsa.uspPEscalaSemanal_Duplica
+crsa.uspP1500_EQTO_SBSG2
+crsa.uspP0600_CK_LISTA
+crsa.P0641_SOBRA_GRAVA
+crsa.uspReconcMat_I131
+crsa.uspP0031_ASPECTO
+crsa.uspP0551_LISTA
+crsa.uspP0705_LIMPEZA_LISTA
+crsa.uspP0705_LIMPEZA_GET_ID
+crsa.P0706_CELA_PRODUTO
+crsa.uspP0706_RESPONSA_LISTA
+crsa.uspP0601_Solucoes
+crsa.FnSplitAny
+crsa.uspPMateSolucoes
+crsa.P0607_LIBERAAREA
+
+Alteração de tabelas
+alter table crsa.T0642_DILUICOES add util_sol_estoque char(1)
+alter table crsa.T0642_DILUICOES add sol_Est_Lote varchar(50)
+alter table crsa.T0642_DILUICOES add util_sol_Princ char(1)
+alter table crsa.T0642_DILUICOES add sol_Princ_Lote varchar(50)
+alter table crsa.T0642_DILUICOES add Sol_Princ_Qto int
+alter table crsa.T0642_DILUICOES add Sol_Princ_Vol float
+alter table crsa.T0642_DILUICOES add VolHidSod1N float
+alter table crsa.T0642_DILUICOES add VolTotalHidSod1N float
+alter table crsa.T0642_DILUICOES add TempoHomeg int
+alter table crsa.T0642_DILUICOES add PresGazOx int
+alter table crsa.T0642_DILUICOES add VazOxi int
+alter table crsa.T0642_DILUICOES add ConcRad80a100  float
+alter table crsa.T0642_DILUICOES add AtvTotSoluc    int
+alter table crsa.T0642_DILUICOES add vol_apreendil   char(1)
+alter table crsa.T0642_DILUICOES add sbr_Descarta    char(1)
+alter table crsa.T0642_DILUICOES add sobra_atv int
+alter table crsa.T0642_DILUICOES add sobra_vol float
+alter table crsa.T0642_DILUICOES add flg_util_sol_dilu char(1)
+alter table crsa.T0642_DILUICOES add sol_princ_Qto_ARR varchar(1000)
+alter table crsa.T0642_DILUICOES add sol_princ_Vol_ARR varchar(1000)
+alter table crsa.T0642_DILUICOES add nro_util_sol_dilu int 
+alter table crsa.T0642_DILUICOES add atv_util_sol_dilu float
+alter table crsa.T0642_DILUICOES add vol_util_sol_dilu float
+
+
+alter table [crsa].[T0600_MATERIAIS_REAGENTES_SOLUCOES] add p600_codAlmoxMaterial char(30)
+alter table [crsa].[T0600_MATERIAIS_REAGENTES_SOLUCOES] add p600_LoteFornec char(50)
+
+insert into sgcr.crsa.T0047_UNIDADE (p047_Unidade,p047_UnidadeDsc,p047_datausu,p047_cdusuario,p047_tipocampo) values ('UN','UN', getdate(),null,null)
+
+
+CREATE TABLE [crsa].[T0095_Operadores](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[pst_numero] [int] NULL,
+	[id_oper_calc_1] [int] NULL,
+	[id_oper_calc_2] [int] NULL,
+	[id_oper_calc_3] [int] NULL,
+	[id_oper_pinca_1] [int] NULL,
+	[id_oper_pinca_2] [int] NULL,
+	[id_oper_pinca_3] [int] NULL,
+	[id_oper_sas_1] [int] NULL,
+	[id_oper_sas_2] [int] NULL,
+	[id_oper_sas_3] [int] NULL,
+	[id_oper_lacre_1] [int] NULL,
+	[id_oper_lacre_2] [int] NULL,
+	[id_oper_lacre_3] [int] NULL,
+	[id_oper] [int] NULL,
+	[dat_atualizacao] [datetime] NULL,
+ CONSTRAINT [PK_T0095_Operadores] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+
+*************************   desconsiderar    *************************   
+CREATE TABLE [crsa].[T643_FonteCalibracao](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[nome] [varchar](30) NULL
+) ON [PRIMARY]
+GO
+id	nome
+1	Césio 137
+2	Cobalto 57
+3	Bário 133
+4	Iodo 131
+*************************   desconsiderar    *************************   
+
+
+
+
+CREATE TABLE [crsa].[T0111_ESCALA_TAREFAS](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[nome] [varchar](200) NULL,
+ CONSTRAINT [PK_T0111_ESCALA_LOCAL] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+
+CREATE TABLE [crsa].[T0111_ESCALA_SEMANAL](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[lotes] [varchar](100) NULL,
+	[produto] [varchar](100) NULL,
+	[dat_inicial] [datetime] NULL,
+	[dat_final] [datetime] NULL,
+	[id_tarefa] [int] NULL,
+	[nom_responsaveis] [varchar](8000) NULL,
+	[cdusuario] [int] NULL,
+	[datatualizacao] [datetime] NULL,
+ CONSTRAINT [PK_T0111_ESCALA_SEMANAL] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+
+ALTER TABLE [crsa].[T0111_ESCALA_SEMANAL]
+ADD CONSTRAINT FK_T0111_ESCALA_SEMANAL_ID FOREIGN KEY (id_tarefa)
+    REFERENCES [crsa].[T0111_ESCALA_TAREFAS](id)
+
+
+
+CREATE TABLE [crsa].[T0111_Rendimento_Processo](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[pst_numero] [int] NOT NULL,
+	[tot_ped_atend] [int] NULL,
+	[tot_ped_prev] [int] NULL,
+	[tot_rendimento] [float] NULL,
+	[cdusuario] [int] NULL,
+	[datusu] [datetime] NULL,
+ CONSTRAINT [PK_T0111_Rendimento_Processo] PRIMARY KEY CLUSTERED 
+(
+	[pst_numero] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+
+**************** NOME DOS PRODUTOS **************** 
+select Prod_Cod510, prod_apelido, prod_nome, Prod_Nome_DCB from [dbo].[T0250_PRODUTO] 
+where Prod_Cod510 is not null 
+  and prod_ativo = 'a'
+  and prod_nome <> ''
+  and Prod_Nome_DCB <> ''
+order by 1
+
+Prod_Cod510	prod_apelido	prod_nome				Prod_Nome_DCB
+BGI       	MIBG-I-131		MIBG-Iodo-131			iobenguano (131 I)
+BGI-I123  	MIBG-I-123		MIBG-Iodo-123			Iobenguano (123  I)
+CAPSULA   	I-131-CAP		IODO-131 CAPSULA		iodeto de sodio (131 I)
+DOT-GA-68 	DOT-GA-68		DOTATATO-Galio-68		octreotato tetraxetana (68 Ga)
+EA-CR     	EDTA-Cr-51		EDTA-Cromo-51			edetato cromico (51 Cr)
+EMB.GER.  	EMB.GER.		EMB. GERADOR			EMBALAGEM/BLINDAGEM DE GERADOR TECNECIO
+GA-67     	CIT-Ga-67		GALIO-67				citrato de galio (67 Ga)
+I-123     	IODO-123		IODO - 123 SOLUCAO		Iodeto de Sodio (123I)
+I-131     	IODO-131		IODO-131 SOLUCAO		iodeto de sodio (131 I)
+IN-DTPA   	OCT-In-111		OCT-Indio-111			pentetreotida (111 In)
+IPEN-TEC  	GERADOR-Tc		Gerador IPEN-TEC		pertecnetato de sodio (99m Tc)
+LIPI      	LIPI-I-131		LIPIODOL-Iodo-131		oleo etiodado (131 I)
+LU-177-DOT	TATE-Lu177		DOTATATO-Lutecio-177	octreotato tetraxetana (177 Lu)
+P-32-S-1  	ACI-P-32		ÁCIDO FOSFORICO-32		acido fosforico (32 P)
+P-32-S-2  	FOSF-P-32		FOSFATO DE SODIO-32		fosfato de sodio (32 P)
+SM-153    	EDTMPSm153		EDTMP-Samario-153		lexidronam (153 Sm)
+TCK-DEX   	DEX500-KIT		DEX500-TEC				dextrana 500 (99m Tc)
+TCK-DEX70 	DEX70-KIT		DEX70-TEC				dextrana 70 (99m Tc)
+TCK-DI    	DISIDA-KIT		DISIDA-TEC				disofenina (99m  Tc)
+TCK-DM    	DMSA-KIT		DMSA-TEC				succimer (99m Tc)
+TCK-ECD   	ECD-KIT			ECD-TEC					bicisato (99m Tc)
+TCK-FI    	FITATO-KIT		FITATO-TEC				fitato de sodio (99m Tc)
+TCK-MA    	MAA-KIT			MACRO-TEC				macrosalbe (99m Tc)
+TCK-MIBI  	MIBI-TCK		MIBI-TEC				sestamibi (99m Tc)
+TCK-PI    	PIRO-KIT		PIRO-TEC				pirofosfato de sodio (99m Tc)
+TCK-SA    	SAH-KIT			ALBUMINA-TEC			albumina humana serica (99m Tc)
+TCK-SNC   	SN COL-KIT		ESTANHO-TEC				estanho coloidal (99m Tc)
+TLCL3     	CL-Tl-201		TALIO-201				cloreto de talio (201 Tl)
+
+
+*----------------------------------------*
+* grava os dados da verificação da cela  *
+*----------------------------------------*
+		--                                  (p600_itemtela)
+		-------------------------------------------------------* 
+		--                   (p600_conforme)                   |
+		-------------------------------------------------*     | 
+		--                                               |     |
+		--          (p600_itensid)                       |     |
+		-----------------------------------------*       |     |
+		--                                       |       |     |
+		execute  crsa.P0600_CK_GRAVA_CELA 76240, 92, '', 1, 0, 1,  @resulta output , @mensa output 
+		--      (valor quando houver)                 | 
+		----------------------------------------------*
+
+
+		select @mensa, @resulta 
+*----------------------------------------*
+* grava os dados da verificação da cela  *
+*----------------------------------------*
+
+
+
+
+create table crsa.T0643_VerifCalibraDoses
+(id int,
+pst_numero int,
+dat_verificacao datetime,
+txt_calib   varchar(30),
+txt_modelo  varchar(30),
+txt_unidprincipal varchar(30),
+txt_local varchar(30),
+txt_produto varchar(30),
+txt_lote    varchar(10),
+txt_zero   varchar(30),
+txt_testesist varchar(30),
+txt_background varchar(30),
+txt_confdados varchar(30),
+txt_radiofonte varchar(30),
+txt_identfonte varchar(30),
+val_medidafonte float,
+val_valesperado float,
+val_desvio float,
+val_leitura01 float,
+val_leitura02 float,
+val_leitura03 float,
+val_leitura04 float,
+val_leitura05 float,
+val_leitura06 float,
+val_leitura07 float,
+val_leitura08 float,
+val_leitura09 float,
+val_leitura10 float,
+val_somaleitura float,
+txt_unidmed  varchar(20),
+val_medleitura float,
+val_limiteinferior float,
+val_limitesuperior float,
+txt_obs  varchar(300),
+cod_usuario  int,
+dat_atualiza datetime
+
+)
+
+USE [sgcr]
+GO
+
+/****** Object:  Table [crsa].[T0601_Solucoes]    Script Date: 14/12/2023 09:17:03 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [crsa].[T0601_Solucoes](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[p705_LimpezaID] [int] NULL,
+	[pst_numero] [int] NULL,
+	[num_lote] [int] NULL,
+	[id_solucoes] [varchar](300) NULL,
+ CONSTRAINT [pk_T0705_Solucoes] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+
+
+*******************************************************************************************************
+
+select * from [sgcr].[crsa].T0642_DILUICOES
+
+select * from [uirapuru].[sgcr].[crsa].T0642_DILUICOES where p641_ID = 18191
+
+
+
+insert into [sgcr].[crsa].T0642_DILUICOES
+(
+[p642_ID],			
+[p641_ID],			
+[p642_Diluicao_numero],		
+[p642_CR],			
+[p642_Fator],			
+[p642_CR_fator],		
+[p642_AtvRef],			
+[p642_Volume],			
+[p642_vol1ml],			
+[p642_I_P],			
+[p642_FaixaInicio],		
+[p642_FaixaFim],		
+[p642_sbc_atv],			
+[p642_sbc_vol],			
+[p642_sbc_cr],			
+[p642_sbc_dtcl],		
+[p642_sbm_atv],			
+[p642_sbm_vol],			
+[p642_sbm_dtcl],		
+[p642_sbm_cr],			
+[p642_tecnico],			
+[p642_tecnico_data],		
+[sobra_utilizada],		
+[lotes_atendidos],		
+[atividade_total],		
+[p642_ph]
+)
+
+select * from [uirapuru].[sgcr].[crsa].T0642_DILUICOES 
+
+*******************************************************************************************************
+
+
+
+*******************************************************************************************************
+GALIO
+*******************************************************************************************************
+
+USE [sgcr]
+GO
+
+/****** Object:  Table [crsa].[T0607_LIBERAAREA]    Script Date: 09/09/2024 14:46:32 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [crsa].[T0607_LIBERAAREA](
+	[P643_Id] [int] IDENTITY(1,1) NOT NULL,
+	[P641_Id] [int] NOT NULL,
+	[P643_LibArea] [int] NOT NULL,
+	[P643_Descricao] [varchar](200) NULL,
+	[P643_Flag] [char](1) NULL,
+	[P643_cdusuario] [int] NULL,
+	[P643_datausu] [datetime] NULL,
+	[pst_numero] [int] NULL
+) ON [PRIMARY]
+GO
+
+
+
+USE [sgcr]
+GO
+/****** Object:  StoredProcedure [crsa].[P0643_I131_LIBERAAREA]    Script Date: 09/09/2024 11:23:01 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+alter procedure [crsa].[P0607_LIBERAAREA]
+(
+    @pst_numero int,
+    @acao       char(1) = null,
+    @id         int     = null,
+    @flag       char(1) = null,
+    @usuario    int     = null,
+    @tiposaida  char(1) = null
+)
+as
+
+set nocount on
+
+/*
+  @pst_numero = numero da pasta
+  @acao       = null(insert) ou 'U' para update
+  @id         = numero da linha para alterar
+  @flag       = sim ou não
+  @usuario    = codigo do usuario solicitante
+  @tiposaida  = controlador para saida xml (site) ou table para crystal
+*/
+
+
+
+-- para listar
+-- exec crsa.P0643_I131_LIBERAAREA 26680
+
+-- para atualizar
+-- exec crsa.P0643_I131_LIBERAAREA 26680, 'U', 36, 'S', 3521
+
+
+if not exists (select * from   crsa.T0607_LIBERAAREA where pst_numero = @pst_numero)
+begin
+   set @acao = null
+end
+
+
+
+
+if (@acao is null)
+begin
+	if exists(
+	select A.*
+	from crsa.T0607_LIBERAAREA a
+	where  pst_numero = @pst_numero
+	)
+	begin
+		if (@tiposaida = 'X' or @tiposaida is null) -- saida para xml
+		begin
+			select A.*
+			from crsa.T0607_LIBERAAREA a
+			where  pst_numero = @pst_numero
+			order by A.P643_LibArea
+			for xml raw
+		end
+		else
+		begin  -- saida para grid/table
+			select A.*
+			from crsa.T0607_LIBERAAREA a
+			where  pst_numero = @pst_numero
+			order by A.P643_LibArea
+		end	end
+	else
+	begin
+		declare @p641id int
+		select @p641id = p607_ID from crsa.T0607_PROCEDIMENTO where pst_numero=@pst_numero
+	    
+		if (@p641id is null)
+		return
+		
+		
+		insert into crsa.T0607_LIBERAAREA ( P641_Id, pst_numero, P643_LibArea, P643_Descricao, P643_Flag)
+		values (@p641id, @pst_numero, 1, 'Área está livre de materiais e/ou documentos não pertinentes ao processo?', 'N')
+
+		insert into crsa.T0607_LIBERAAREA ( P641_Id, pst_numero, P643_LibArea, P643_Descricao, P643_Flag)
+		values (@p641id, @pst_numero, 2, 'Conferência dos registros de limpeza da cela e verificação visual da limpeza realizada?', 'N')
+
+		insert into crsa.T0607_LIBERAAREA ( P641_Id, pst_numero, P643_LibArea, P643_Descricao, P643_Flag)
+		values (@p641id, @pst_numero, 3, 'Verificação do sistema de envase (pipetadora)?', 'N')
+
+		insert into crsa.T0607_LIBERAAREA ( P641_Id, pst_numero, P643_LibArea, P643_Descricao, P643_Flag)
+		values (@p641id, @pst_numero, 4, 'Verificação de gás oxigênio disponível?', 'N')
+
+		insert into crsa.T0607_LIBERAAREA ( P641_Id, pst_numero, P643_LibArea, P643_Descricao, P643_Flag)
+		values (@p641id, @pst_numero, 5, 'Verificação da rede elétrica da área e computadores?', 'N')
+
+		insert into crsa.T0607_LIBERAAREA ( P641_Id, pst_numero, P643_LibArea, P643_Descricao, P643_Flag)
+		values (@p641id, @pst_numero, 6, 'Verificação do calibrador de doses (console e câmara) conforme procedimento descrito na IT-DIRF-0901-02 e registrado no FM-DIRF-0901-02-01 e anexar à pasta do produto?', 'N')
+
+		insert into crsa.T0607_LIBERAAREA ( P641_Id, pst_numero, P643_LibArea, P643_Descricao, P643_Flag)
+		values (@p641id, @pst_numero, 7, 'Verificação da cela conforme FM-DIRF-0901-04 e anexar à pasta do produto?', 'N')
+
+		--insert into crsa.T0643_LIBERAAREA (	pst_numero, P643_LibArea, P643_Descricao, P643_Flag)
+		--values (@pst_numero, 8, 'Autoclave ligada?', 'N')
+
+
+		if (@tiposaida = 'X' or @tiposaida is null) -- saida para xml
+		begin
+			select A.*
+			from crsa.T0607_LIBERAAREA a
+			where  pst_numero = @pst_numero
+			order by A.P643_LibArea
+			for xml raw
+		end
+		else
+		begin  -- saida para grid/table
+			select A.*
+			from crsa.T0607_LIBERAAREA a
+			where  pst_numero = @pst_numero
+			order by A.P643_LibArea
+		end
+	end
+end
+
+if (@acao = 'U' )
+	begin
+	update crsa.T0607_LIBERAAREA 
+	set P643_Flag = @flag,
+		P643_cdusuario = @usuario,
+		P643_datausu = getdate()
+	where P643_Id = @id 
+end
+
+
+
+===============================   para a folha de Gálio
+
+USE [sgcr]
+GO
+
+/****** Object:  Table [crsa].[T0607_PROCEDTOS]    Script Date: 18/09/2024 13:36:47 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [crsa].[T0607_PROCEDTOS](
+	[p607_id] [int] IDENTITY(1,1) NOT NULL,
+	[pst_numero] [int] NULL,
+	[rea_aq_ini] [varchar](5) NULL,
+	[rea_aq_fim] [varchar](5) NULL,
+	[rea_temper] [decimal](13, 2) NULL,
+	[dilu_ini] [varchar](5) NULL,
+	[dilu_fim] [varchar](5) NULL,
+	[dilu_vol] [decimal](13, 2) NULL,
+	[dilu_vol_bal] [decimal](13, 2) NULL,
+	[frac_atv_ini] [int] NULL,
+	[frac_atv_fim] [int] NULL,
+	[frac_lotes_atend] [varchar](100) NULL,
+	[frac_tot_partida] [int] NULL,
+	[frac_atv_total] [int] NULL,
+	[frac_cr_cal] [decimal](13, 4) NULL,
+	[frac_vol_apres] [char](1) NULL,
+	[frac_vol_atv] [decimal](13, 4) NULL,
+	[frac_vol_vol] [decimal](13, 4) NULL,
+	[frac_vol_fim] [decimal](13, 4) NULL,
+	[frac_tot_sol] [decimal](13, 4) NULL,
+	[frac_ph] [decimal](13, 4) NULL,
+	[frac_dt_medida] [datetime] NULL,
+	[frac_fat_deca] [decimal](13, 4) NULL,
+	[frac_cr_calib] [decimal](13, 4) NULL,
+	[frac_sobra] [char](1) NULL,
+	[frac_sobra_atv] [decimal](13, 4) NULL,
+	[frac_sobra_vol] [decimal](13, 4) NULL,
+	[frac_dt_calib] [datetime] NULL,
+	[estr_autoc_ini] [varchar](5) NULL,
+	[estr_temp_ini] [varchar](5) NULL,
+	[estr_autoc_fim] [varchar](5) NULL,
+	[estr_temp_fim] [varchar](5) NULL,
+	[estr_press_ini] [varchar](5) NULL,
+	[estr_press_fim] [varchar](5) NULL,
+	[estr_reg_proc] [char](1) NULL,
+	[estr_ocorr] [char](1) NULL,
+	[estr_obs] [varchar](100) NULL,
+	[p607_Datausu] [datetime] NULL,
+	[p607_cdusuario] [int] NULL,
+ CONSTRAINT [PK_T0607_PROCEDTOS] PRIMARY KEY CLUSTERED 
+(
+	[p607_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+
+================== Procedure para persistencia
+USE [sgcr]
+GO
+/****** Object:  StoredProcedure [crsa].[P0607_PROCEDTOS]    Script Date: 18/09/2024 13:47:16 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER procedure [crsa].[P0607_PROCEDTOS]
+(
+	/*ACAO = (I)insert  (D)delete  (U)update  (S)select  */
+	@ACAO  char(1),
+	@p607_id int =null,
+	@pst_numero int =null,
+	@rea_aq_ini varchar(5) =null,
+	@rea_aq_fim varchar(5) =null,
+	@rea_temper decimal(13, 2) =null,
+	@dilu_ini varchar(5) =null,
+	@dilu_fim varchar(5) =null,
+	@dilu_vol decimal(13, 2) =null,
+	@dilu_vol_bal decimal(13, 2) =null,
+	@frac_atv_ini int =null,
+	@frac_atv_fim int =null,
+	@frac_lotes_atend varchar(100) =null,
+	@frac_tot_partida int =null,
+	@frac_atv_total int =null,
+	@frac_cr_cal decimal(13, 4) =null,
+	@frac_vol_apres char(1) =null,
+	@frac_vol_atv decimal(13, 4) =null,
+	@frac_vol_vol decimal(13, 4) =null,
+	@frac_vol_fim decimal(13, 4) =null,
+	@frac_tot_sol decimal(13, 4) =null,
+	@frac_ph decimal(13, 4) =null,
+	@frac_dt_medida datetime =null,
+	@frac_fat_deca decimal(13, 4) =null,
+	@frac_cr_calib decimal(13, 4) =null,
+	@frac_sobra char(1) =null,
+	@frac_sobra_atv decimal(13, 4) =null,
+	@frac_sobra_vol decimal(13, 4) =null,
+	@frac_dt_calib datetime =null,
+	@estr_autoc_ini varchar(5) =null,
+	@estr_temp_ini varchar(5) =null,
+	@estr_autoc_fim varchar(5) =null,
+	@estr_temp_fim varchar(5) =null,
+	@estr_press_ini varchar(5) =null,
+	@estr_press_fim varchar(5) =null,
+	@estr_reg_proc char(1) =null,
+	@estr_ocorr char(1) =null,
+	@estr_obs varchar(10) =null,
+	@p607_Datausu datetime =null,
+	@p607_cdusuario int  =null
+)
+as
+
+if @ACAO = 'S'
+	select * from T0607_PROCEDTOS where pst_numero = @pst_numero
+
+if @ACAO = 'I'
+begin
+	insert into crsa.T0607_PROCEDTOS (
+	pst_numero,
+	rea_aq_ini,
+	rea_aq_fim,
+	rea_temper,
+	dilu_ini,
+	dilu_fim,
+	dilu_vol,
+	dilu_vol_bal,
+	frac_atv_ini,
+	frac_atv_fim ,
+	frac_lotes_atend,
+	frac_tot_partida,
+	frac_atv_total,
+	frac_cr_cal,
+	frac_vol_apres,
+	frac_vol_atv,
+	frac_vol_vol,
+	frac_vol_fim,
+	frac_tot_sol,
+	frac_ph,
+	frac_dt_medida,
+	frac_fat_deca,
+	frac_cr_calib,
+	frac_sobra,
+	frac_sobra_atv,
+	frac_sobra_vol,
+	frac_dt_calib,
+	estr_autoc_ini,
+	estr_temp_ini,
+	estr_autoc_fim,
+	estr_temp_fim,
+	estr_press_ini,
+	estr_press_fim,
+	estr_reg_proc,
+	estr_ocorr,
+	estr_obs,
+	p607_Datausu,
+	p607_cdusuario
+	)
+	values (
+	@pst_numero,
+	@rea_aq_ini,
+	@rea_aq_fim,
+	@rea_temper,
+	@dilu_ini,
+	@dilu_fim,
+	@dilu_vol,
+	@dilu_vol_bal,
+	@frac_atv_ini,
+	@frac_atv_fim ,
+	@frac_lotes_atend,
+	@frac_tot_partida,
+	@frac_atv_total,
+	@frac_cr_cal,
+	@frac_vol_apres,
+	@frac_vol_atv,
+	@frac_vol_vol,
+	@frac_vol_fim,
+	@frac_tot_sol,
+	@frac_ph,
+	@frac_dt_medida,
+	@frac_fat_deca,
+	@frac_cr_calib,
+	@frac_sobra,
+	@frac_sobra_atv,
+	@frac_sobra_vol,
+	@frac_dt_calib,
+	@estr_autoc_ini,
+	@estr_temp_ini,
+	@estr_autoc_fim,
+	@estr_temp_fim,
+	@estr_press_ini,
+	@estr_press_fim,
+	@estr_reg_proc,
+	@estr_ocorr,
+	@estr_obs,
+	@p607_Datausu,
+	@p607_cdusuario
+	)
+end
+
+if @ACAO = 'U'
+begin
+	update crsa.T0607_PROCEDTOS 
+	set
+	rea_aq_ini		=		@rea_aq_ini,
+	rea_aq_fim		=		@rea_aq_fim,
+	rea_temper		=		@rea_temper,
+	dilu_ini		=		@dilu_ini,
+	dilu_fim		=		@dilu_fim,
+	dilu_vol		=		@dilu_vol,
+	dilu_vol_bal	=		@dilu_vol_bal,
+	frac_atv_ini	=		@frac_atv_ini,
+	frac_atv_fim	=		@frac_atv_fim ,
+	frac_lotes_atend=		@frac_lotes_atend,
+	frac_tot_partida=		@frac_tot_partida,
+	frac_atv_total	=	    @frac_atv_total,
+	frac_cr_cal		=		@frac_cr_cal,
+	frac_vol_apres	=	    @frac_vol_apres,
+	frac_vol_atv	=		@frac_vol_atv,
+	frac_vol_vol	=		@frac_vol_vol,
+	frac_vol_fim	=		@frac_vol_fim,
+	frac_tot_sol	=		@frac_tot_sol,
+	frac_ph			=		@frac_ph,
+	frac_dt_medida	=	    @frac_dt_medida,
+	frac_fat_deca	=		@frac_fat_deca,
+	frac_cr_calib	=		@frac_cr_calib,
+	frac_sobra		=		@frac_sobra,
+	frac_sobra_atv	=	    @frac_sobra_atv,
+	frac_sobra_vol	=	    @frac_sobra_vol,
+	frac_dt_calib	=		@frac_dt_calib,
+	estr_autoc_ini	=	    @estr_autoc_ini,
+	estr_temp_ini	=		@estr_temp_ini,
+	estr_autoc_fim	=	    @estr_autoc_fim,
+	estr_temp_fim	=		@estr_temp_fim,
+	estr_press_ini	=	    @estr_press_ini,
+	estr_press_fim	=	    @estr_press_fim,
+	estr_reg_proc	=		@estr_reg_proc,
+	estr_ocorr		=		@estr_ocorr,
+	estr_obs		=		@estr_obs,
+	p607_Datausu	=		@p607_Datausu,
+	p607_cdusuario  =		@p607_cdusuario
+	where
+	pst_numero = @pst_numero
+end
+
+

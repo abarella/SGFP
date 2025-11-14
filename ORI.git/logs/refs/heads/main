@@ -1,0 +1,9 @@
+0000000000000000000000000000000000000000 05cd96297e9552de066d7795d939a2ae92f14174 Alberto Barella Junior <alberto.j-basis@ipen.br> 1725987639 -0300	commit (initial): Comit Inicial do Projeto
+05cd96297e9552de066d7795d939a2ae92f14174 05cd96297e9552de066d7795d939a2ae92f14174 Alberto Barella Junior <alberto.j-basis@ipen.br> 1725988044 -0300	Branch: renamed refs/heads/master to refs/heads/main
+05cd96297e9552de066d7795d939a2ae92f14174 7abeea48a2f54778e6e131c99046b86cbe0c0ed2 Alberto Barella Junior <alberto.j-basis@ipen.br> 1725988472 -0300	pull origin main --allow-unrelated-histories: Merge made by the 'ort' strategy.
+7abeea48a2f54778e6e131c99046b86cbe0c0ed2 4a60aa0cdacccb955e6cdf78340d4c1044538ab1 Alberto Barella Junior <alberto.j-basis@ipen.br> 1726079995 -0300	commit: Model Galio
+4a60aa0cdacccb955e6cdf78340d4c1044538ab1 f93bdd5416364cb6ad9e7ff7df28f376e7003230 Alberto Barella Junior <alberto.j-basis@ipen.br> 1726496856 -0300	commit: CORR: calculo diluição
+f93bdd5416364cb6ad9e7ff7df28f376e7003230 d55cd178a538c1b585694e5abcd35ccd67b442bb Alberto Barella Junior <alberto.j-basis@ipen.br> 1727121878 -0300	commit: Persistencia Limpeza da Cela
+d55cd178a538c1b585694e5abcd35ccd67b442bb 7b1f7d5004d64ad46a19b289a28ffb8d90d62cfe Alberto Barella Junior <alberto.j-basis@ipen.br> 1727975093 -0300	commit: Folha de Gálio
+7b1f7d5004d64ad46a19b289a28ffb8d90d62cfe 78055fe72cb552c2c3f91a0dacab503a8f4caaa7 Alberto Barella Junior <alberto.j-basis@ipen.br> 1730824427 -0300	commit: Ambiente de Produção
+78055fe72cb552c2c3f91a0dacab503a8f4caaa7 fbaf08022e6b4a292a4d11f0c82fc23cd6916c75 Alberto Barella Junior <alberto.j-basis@ipen.br> 1730899202 -0300	commit: Ajustes para ambiente de produção

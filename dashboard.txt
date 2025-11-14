@@ -1,0 +1,15 @@
+
+
+select year(p110dtrg) ano, p110prod, count(*)  partidas
+from vendasPelicano.dbo.tcacp110
+where  year(p110dtrg) >= year(getdate())-5
+group by year(p110dtrg), p110prod
+order by year(p110dtrg), p110prod
+
+
+select year(p110dtrg) ano, p110prod, count(*) partidas 
+from vendasPelicano.dbo.tcacp110
+where  year(p110dtrg) >= year(getdate())-5
+and p110prod = 'i-131'
+group by year(p110dtrg), p110prod
+order by year(p110dtrg), p110prod
